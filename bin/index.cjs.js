@@ -26,6 +26,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
 var src_exports = {};
 __export(src_exports, {
   default: () => src_default
@@ -33,8 +35,24 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 var babel = __toESM(require("@babel/core"));
 var import_fs = __toESM(require("fs"));
-var import_createHash = __toESM(require("./util/createHash"));
-const RettlePlugin = (option) => {
+
+// src/util/createHash.ts
+var djb2Hash = (str) => {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+  }
+  return hash;
+};
+var createHash = (str) => {
+  const hash = djb2Hash(str);
+  const fullStr = "0000000" + (hash & 16777215).toString(16);
+  return fullStr.substring(fullStr.length - 8, fullStr.length);
+};
+var createHash_default = createHash;
+
+// src/index.ts
+var RettlePlugin = (option) => {
   return {
     name: "esbuild-plugin-rettle",
     setup(build) {
@@ -52,7 +70,7 @@ const RettlePlugin = (option) => {
       };
       build.onLoad({ filter }, ({ path }) => {
         const code = import_fs.default.readFileSync(path, "utf-8");
-        const formatCode = code.replace(/rettle-ref/g, `data-ref-${(0, import_createHash.default)(path)}`);
+        const formatCode = code.replace(/rettle-ref/g, `data-ref-${createHash_default(path)}`);
         return new Promise(async (resolve, reject) => {
           try {
             const result = await transformBabel(formatCode, path);

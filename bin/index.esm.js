@@ -1,7 +1,24 @@
+// src/index.ts
 import * as babel from "@babel/core";
 import fs from "fs";
-import createHash from "./util/createHash";
-const RettlePlugin = (option) => {
+
+// src/util/createHash.ts
+var djb2Hash = (str) => {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+  }
+  return hash;
+};
+var createHash = (str) => {
+  const hash = djb2Hash(str);
+  const fullStr = "0000000" + (hash & 16777215).toString(16);
+  return fullStr.substring(fullStr.length - 8, fullStr.length);
+};
+var createHash_default = createHash;
+
+// src/index.ts
+var RettlePlugin = (option) => {
   return {
     name: "esbuild-plugin-rettle",
     setup(build) {
@@ -19,7 +36,7 @@ const RettlePlugin = (option) => {
       };
       build.onLoad({ filter }, ({ path }) => {
         const code = fs.readFileSync(path, "utf-8");
-        const formatCode = code.replace(/rettle-ref/g, `data-ref-${createHash(path)}`);
+        const formatCode = code.replace(/rettle-ref/g, `data-ref-${createHash_default(path)}`);
         return new Promise(async (resolve, reject) => {
           try {
             const result = await transformBabel(formatCode, path);
