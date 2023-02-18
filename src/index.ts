@@ -1,7 +1,9 @@
 import * as babel from "@babel/core";
 import {Plugin} from "esbuild";
 import fs from "fs";
+import * as path from "path";
 import createHash from "./util/createHash";
+import {replacer} from "./util/replacers";
 
 interface PluginOptions {
   filter?: RegExp,
@@ -24,12 +26,18 @@ const RettlePlugin = (option: PluginOptions):Plugin => {
           return Promise.reject(`BabelCannot Compile ${path}`);
         }
       }
-      build.onLoad({filter}, ({path}) => {
-        const code = fs.readFileSync(path, "utf-8");
-        const formatCode = code.replace(/rettle-ref/g, `data-ref-${createHash(path)}`);
+      build.onLoad({filter}, (args) => {
+        const code = fs.readFileSync(args.path, "utf-8");
+        const tsxFilePath = path.extname(args.path).includes(".js") ? args.path.replace(".cache/", "").replace( path.extname(args.path), ".tsx") : args.path;
+        const hash = createHash(tsxFilePath);
+        const replaceContents = replacer(hash);
+        let formatCode:string = code;
+        for (const replace of replaceContents) {
+          formatCode = formatCode.replace(...replace);
+        }
         return new Promise(async(resolve, reject) => {
           try {
-            const result = await transformBabel(formatCode, path);
+            const result = await transformBabel(formatCode, args.path);
             resolve({
               contents: result
             });
