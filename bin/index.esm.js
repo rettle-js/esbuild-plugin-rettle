@@ -21,36 +21,36 @@ var createHash_default = createHash;
 // src/util/replacers.ts
 var replacer = (hash) => [
   // Rettle Original
-  ["rettle-ref", `data-ref-${hash}`],
+  [/rettle-ref/g, `data-ref-${hash}`],
   // Other Events
-  ["rettle-scroll", `data-scroll-${hash}`],
-  ["rettle-resize", `data-resize-${hash}`],
-  ["rettle-load", `data-load-${hash}`],
+  [/rettle-scroll/g, `data-scroll-${hash}`],
+  [/rettle-resize/g, `data-resize-${hash}`],
+  [/rettle-load/g, `data-load-${hash}`],
   // Mouse Events
-  ["rettle-click", `data-click-${hash}`],
-  ["rettle-mouseenter", `data-mouseenter-${hash}`],
-  ["rettle-mouseleave", `data-mouseleave-${hash}`],
-  ["rettle-mouseover", `data-mouseover-${hash}`],
-  ["rettle-mousedown", `data-mousedown-${hash}`],
-  ["rettle-mouseup", `data-mouseup-${hash}`],
-  ["rettle-mouseout", `data-mouseout-${hash}`],
-  ["rettle-mousemove", `data-mousemove-${hash}`],
-  ["rettle-dblclick", `data-dblclick-${hash}`],
+  [/rettle-click/g, `data-click-${hash}`],
+  [/rettle-mouseenter/g, `data-mouseenter-${hash}`],
+  [/rettle-mouseleave/g, `data-mouseleave-${hash}`],
+  [/rettle-mouseover/g, `data-mouseover-${hash}`],
+  [/rettle-mousedown/g, `data-mousedown-${hash}`],
+  [/rettle-mouseup/g, `data-mouseup-${hash}`],
+  [/rettle-mouseout/g, `data-mouseout-${hash}`],
+  [/rettle-mousemove/g, `data-mousemove-${hash}`],
+  [/rettle-dblclick/g, `data-dblclick-${hash}`],
   // Dom Events
-  ["rettle-DOMFocusIn", `data-DOMFocusIn-${hash}`],
-  ["rettle-DOMFocusOut", `data-DOMFocusOut-${hash}`],
-  ["rettle-DOMActivate", `data-DOMActivate-${hash}`],
+  [/rettle-DOMFocusIn/g, `data-DOMFocusIn-${hash}`],
+  [/rettle-DOMFocusOut/g, `data-DOMFocusOut-${hash}`],
+  [/rettle-DOMActivate/g, `data-DOMActivate-${hash}`],
   // Inputs Events
-  ["rettle-change", `data-change-${hash}`],
-  ["rettle-select", `data-select-${hash}`],
-  ["rettle-submit", `data-submit-${hash}`],
-  ["rettle-reset", `data-reset-${hash}`],
-  ["rettle-focus", `data-focus-${hash}`],
-  ["rettle-blur", `data-blur-${hash}`],
+  [/rettle-change/g, `data-change-${hash}`],
+  [/rettle-select/g, `data-select-${hash}`],
+  [/rettle-submit/g, `data-submit-${hash}`],
+  [/rettle-reset/g, `data-reset-${hash}`],
+  [/rettle-focus/g, `data-focus-${hash}`],
+  [/rettle-blur/g, `data-blur-${hash}`],
   // Keyboard Events
-  ["rettle-keypress", `data-keypress-${hash}`],
-  ["rettle-keydown", `data-keydown-${hash}`],
-  ["rettle-keyup", `data-keyup-${hash}`]
+  [/rettle-keypress/g, `data-keypress-${hash}`],
+  [/rettle-keydown/g, `data-keydown-${hash}`],
+  [/rettle-keyup/g, `data-keyup-${hash}`]
 ];
 
 // src/index.ts
