@@ -79,6 +79,7 @@ var RettlePlugin = (option) => {
         for (const replace of replaceContents) {
           formatCode = formatCode.replace(...replace);
         }
+        formatCode = formatCode.replace(/__filename/g, `"${tsxFilePath}"`);
         return new Promise(async (resolve, reject) => {
           try {
             const result = await transformBabel(formatCode, args.path);
