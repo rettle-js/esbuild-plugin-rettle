@@ -22,6 +22,7 @@ var createHash_default = createHash;
 var replacer = (hash) => [
   // Rettle Original
   [/rettle-ref/g, `data-ref-${hash}`],
+  [new RegExp("[fr]", "g"), hash],
   // Other Events
   [/rettle-scroll/g, `data-scroll-${hash}`],
   [/rettle-resize/g, `data-resize-${hash}`],
