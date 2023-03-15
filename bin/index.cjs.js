@@ -88,6 +88,19 @@ var replacer = (hash) => [
   [/rettle-keyup/g, `data-keyup-${hash}`]
 ];
 
+// src/util/clientSideOnly.ts
+var checkClientSide = (code) => {
+  const target = "@use-client";
+  const lines = code.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].includes(target)) {
+      lines[i + 1] = "// " + lines[i + 1];
+    }
+  }
+  return lines.join("\n");
+};
+var clientSideOnly_default = checkClientSide;
+
 // src/index.ts
 var RettlePlugin = (option) => {
   return {
@@ -111,6 +124,8 @@ var RettlePlugin = (option) => {
         const hash = createHash_default(tsxFilePath);
         const replaceContents = replacer(hash);
         let formatCode = code;
+        if (option.mode === "server")
+          formatCode = clientSideOnly_default(formatCode);
         for (const replace of replaceContents) {
           formatCode = formatCode.replace(...replace);
         }

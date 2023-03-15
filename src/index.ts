@@ -4,9 +4,11 @@ import fs from "fs";
 import * as path from "path";
 import createHash from "./util/createHash";
 import {replacer} from "./util/replacers";
+import checkClientSide from "./util/clientSideOnly";
 
 interface PluginOptions {
   filter?: RegExp,
+  mode?: "server" | "client",
   babel?: babel.TransformOptions
 }
 
@@ -31,7 +33,8 @@ const RettlePlugin = (option: PluginOptions):Plugin => {
         const tsxFilePath = path.extname(args.path).includes(".js") ? args.path.replace(".cache/", "").replace( path.extname(args.path), ".tsx") : args.path;
         const hash = createHash(tsxFilePath);
         const replaceContents = replacer(hash);
-        let formatCode:string = code;
+        let formatCode = code;
+        if (option.mode === "server") formatCode = checkClientSide(formatCode);
         for (const replace of replaceContents) {
           formatCode = formatCode.replace(...replace);
         }
